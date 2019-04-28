@@ -22,6 +22,8 @@ interface PhotoCompatDelegate {
     fun onPhoto(bitmap: Bitmap?)
 }
 
+private const val AUTHORITY = "com.wawi.api.takephoto.fileprovider"
+
 open class PhotoCompat(context: Any) {
     private var context: Any? = null
     /** 当前请求类型【拍照、相册】 */
@@ -90,7 +92,7 @@ open class PhotoCompat(context: Any) {
         imageUri = if(Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             Uri.fromFile(outputImage)
         }else {
-            FileProvider.getUriForFile(ctx!!,"com.wawi.user.crowd.takephoto.fileprovider",outputImage)
+            FileProvider.getUriForFile(ctx!!, AUTHORITY, outputImage)
         }
 
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -233,6 +235,6 @@ open class PhotoCompat(context: Any) {
 }
 
 object RequestType {
-    val REQUEST_TAKE_PHOTO = 2.shl(1)
-    val REQUEST_CHOOSE_PHOTO = 2.shl(2)
+    const val REQUEST_TAKE_PHOTO = 2.shl(1)
+    const val REQUEST_CHOOSE_PHOTO = 2.shl(2)
 }

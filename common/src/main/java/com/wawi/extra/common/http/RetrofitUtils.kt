@@ -17,19 +17,26 @@ object RetrofitServiceFactory {
     // Time in seconds
     private const val TIME_TO_CONNECT = 10
     private const val TIME_TO_READ = 20
-//    private const val BASE_URL = "http://zhkt.hbwwcc.com:8080/wc/"
-//    private const val BASE_URL = "http://106.15.88.155:9090/"
-//    val crowdService: CrowdService by lazy {
-//        create(
-//            CrowdService::class.java
-//        )
-//    }
+
+    /**
+     * @see RetrofitServiceFactory.create(clazz: Class<T>, baseUrl: String, headerInterceptor: Interceptor = UserAgentInterceptor(), readTimeOut: Int = TIME_TO_READ, connectTimeOut: Int = TIME_TO_CONNECT)
+     */
     open fun <T> create(clazz: Class<T>, baseUrl: String, headerInterceptor: Interceptor = UserAgentInterceptor()): T {
+        return create(clazz, baseUrl, headerInterceptor, TIME_TO_READ, TIME_TO_CONNECT)
+    }
+
+    /**
+     * 拓展创建http句柄
+     *
+     * @param readTimeOut 读取连接超时设置（单位：秒）
+     * @param connectTimeOut 连接超时设置（单位：秒）
+     */
+    open fun <T> create(clazz: Class<T>, baseUrl: String, headerInterceptor: Interceptor = UserAgentInterceptor(), readTimeOut: Int = TIME_TO_READ, connectTimeOut: Int = TIME_TO_CONNECT): T {
         val client = OkHttpClient.Builder()
             .addInterceptor(headerInterceptor)
 //            .addInterceptor(GzipRequestInterceptor())
-            .readTimeout(TIME_TO_READ.toLong(), TimeUnit.SECONDS)
-            .connectTimeout(TIME_TO_CONNECT.toLong(), TimeUnit.SECONDS)
+            .readTimeout(readTimeOut.toLong(), TimeUnit.SECONDS)
+            .connectTimeout(connectTimeOut.toLong(), TimeUnit.SECONDS)
             .build()
         val retrofit = Retrofit.Builder().baseUrl(baseUrl)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -39,7 +46,7 @@ object RetrofitServiceFactory {
     }
 }
 
-/** 这个interceptor是修改User-Agent头信息 */
+/** 这个interceptor是修改Header头信息 */
 open class UserAgentInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response? {
         val originalRequest = chain.request()
