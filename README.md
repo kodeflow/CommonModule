@@ -1,7 +1,6 @@
 # CommonModule
-kotlin common module
-
-## CommonModule
+此module为android端通用代码封装
+# Useage
 使用前必须先在Application中注册
 ```
 class App: Application() {
