@@ -15,15 +15,3 @@ class App: Application() {
         CommonModule.regist(shared)
     }
 }
-
-// ---------------- extensions ----------------
-
-/**
- *
- * @in Int.this 输入为dp
- * @out px 值
- *
- * 将dip转成px
- */
-val Int.dp: Int
-    get() = (this * App.shared.resources.displayMetrics.density + 0.5f).toInt()

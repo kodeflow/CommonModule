@@ -33,6 +33,7 @@ object RetrofitServiceFactory {
      */
     open fun <T> create(clazz: Class<T>, baseUrl: String, headerInterceptor: Interceptor = UserAgentInterceptor(), readTimeOut: Int = TIME_TO_READ, connectTimeOut: Int = TIME_TO_CONNECT): T {
         val client = OkHttpClient.Builder()
+            .retryOnConnectionFailure(false)
             .addInterceptor(headerInterceptor)
 //            .addInterceptor(GzipRequestInterceptor())
             .readTimeout(readTimeOut.toLong(), TimeUnit.SECONDS)
