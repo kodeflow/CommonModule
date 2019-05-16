@@ -36,4 +36,4 @@ val Int.dp: Int
  * 将dip转成px
  */
 val Int.money: Float
-    get() = ((this as Float) / 100)
+    get() = (this.toFloat() / 100)
