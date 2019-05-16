@@ -136,7 +136,9 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             // form field with an error.
             focusView?.requestFocus()
         } else {
-            val hud = hud("正在登录").show()
+//            val hud = hud("正在登录")
+            val hud = hud()
+
             Crowd.login(
                 ParamLogin("17343203065", AESCrypt.encode("qa123456")),
                 {
