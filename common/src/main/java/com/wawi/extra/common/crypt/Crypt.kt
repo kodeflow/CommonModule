@@ -6,6 +6,9 @@ import javax.crypto.spec.SecretKeySpec
 
 private const val AES_KEY = "bec2aks8bnhs2io4"
 
+/**
+ * 采用 ecb 电子密码本模式加密，密钥长度要求16 * 8 = 128 位
+ */
 object AESCrypt{
 
     /**
