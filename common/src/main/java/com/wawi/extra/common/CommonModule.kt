@@ -32,4 +32,14 @@ object CommonModule {
     fun getContext(): Context {
         return sAppContext ?: throw NullPointerException("CommonModule.sAppContext can not be null. Use after registration.")
     }
+
+    private var _debugModeEnabled = false
+    var debugModeEnabled = _debugModeEnabled
+        get() = _debugModeEnabled
+        private set
+    fun setDebugModeEnable(enable: Boolean) {
+        _debugModeEnabled = enable
+    }
+
+
 }

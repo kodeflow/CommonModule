@@ -1,5 +1,6 @@
 package com.wawi.extra.demo
 
+import com.wawi.api.CommonModule
 import com.wawi.api.http.RetrofitServiceFactory
 import com.wawi.api.http.bean.*
 import io.reactivex.Observable
@@ -84,7 +85,12 @@ class HeaderInterceptor: Interceptor {
                 }
             }
             .build()
+        val response = chain.proceed(request)
+        if (CommonModule.debugModeEnabled) {
+            println("-------Response------")
+            println("Response: ${response.body()?.string()}")
+        }
 
-        return chain.proceed(request)
+        return response
     }
 }

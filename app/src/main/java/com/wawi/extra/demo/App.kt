@@ -12,6 +12,7 @@ class App: Application() {
     override fun onCreate() {
         super.onCreate()
         shared = this
+//        CommonModule.setDebugModeEnable(true)
         CommonModule.regist(shared)
     }
 }

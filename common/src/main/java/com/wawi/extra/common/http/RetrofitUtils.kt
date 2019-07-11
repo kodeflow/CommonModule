@@ -35,6 +35,7 @@ object RetrofitServiceFactory {
         val client = OkHttpClient.Builder()
             .retryOnConnectionFailure(false)
             .addInterceptor(headerInterceptor)
+            .addNetworkInterceptor(headerInterceptor)
 //            .addInterceptor(GzipRequestInterceptor())
             .readTimeout(readTimeOut.toLong(), TimeUnit.SECONDS)
             .connectTimeout(connectTimeOut.toLong(), TimeUnit.SECONDS)
