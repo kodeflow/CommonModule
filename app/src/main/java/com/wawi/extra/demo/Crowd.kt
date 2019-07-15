@@ -85,12 +85,7 @@ class HeaderInterceptor: Interceptor {
                 }
             }
             .build()
-        val response = chain.proceed(request)
-        if (CommonModule.debugModeEnabled) {
-            println("-------Response------")
-            println("Response: ${response.body()?.string()}")
-        }
 
-        return response
+        return chain.proceed(request)
     }
 }
