@@ -23,6 +23,9 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.wawi.api.crypt.AESCrypt
 import com.wawi.api.extensions.hud
+import com.wawi.api.extensions.isLeapYear
+import com.wawi.api.extensions.weekNameCN
+import com.wawi.api.extensions.weekNameEN
 import kotlinx.android.synthetic.main.activity_login.*
 import java.util.*
 
@@ -39,6 +42,13 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        println("---- chinese week name: ${Date().weekNameCN()}")
+        println("---- english week name: ${Date().weekNameEN()}")
+        println("---- now is leap year: ${Date().isLeapYear()}")
+        println("---- 2008 is leap year: ${2008.isLeapYear()}")
+        println("---- 2018 is leap year: ${2018.isLeapYear()}")
+
         // Set up the login form.
         populateAutoComplete()
         password.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
