@@ -52,6 +52,6 @@ publish {
     userOrg = 'hbwawi'
     groupId = 'com.wawi.common'
     artifactId = 'CommonModule'
-    publishVersion = '0.1.0'
+    publishVersion = '0.1.1'
     desc = 'kotlin公共代码封装'
 }
