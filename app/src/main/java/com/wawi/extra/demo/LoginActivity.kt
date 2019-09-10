@@ -21,12 +21,17 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import com.wawi.api.CommonModule
 import com.wawi.api.crypt.AESCrypt
 import com.wawi.api.extensions.hud
 import com.wawi.api.extensions.isLeapYear
 import com.wawi.api.extensions.weekNameCN
 import com.wawi.api.extensions.weekNameEN
+import com.wawi.extra.common.bean.DownloadBean
+import com.wawi.extra.common.http.DownloadManager
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -59,7 +64,23 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             false
         })
 
-        email_sign_in_button.setOnClickListener { attemptLogin() }
+        email_sign_in_button.setOnClickListener {
+            DownloadManager.shared().download("http://imtt.dd.qq.com/16891/89E1C87A75EB3E1221F2CDE47A60824A.apk?fsname=com.snda.wifilocating_4.2.62_3192.apk&csr=1bbd")
+            attemptLogin() }
+
+        GlobalScope.launch {
+            val item = DownloadBean("http://baidu.com", "caowen/*.apk", "*.apk", 100, 30)
+            val item1 = DownloadBean("http://baidu.com", "codeflow/*.apk", "*.apk", 100, 30)
+
+            CommonModule.getDownloadDatabase().downloadDao().insertRecords(item, item1)
+            val bean = CommonModule.getDownloadDatabase().downloadDao().findByUrl("http://baidu.com")
+
+            println("bean: $bean")
+
+        }
+
+
+
     }
 
     private fun populateAutoComplete() {

@@ -1,10 +1,13 @@
 package com.wawi.api
 
+import android.arch.persistence.room.Room
 import android.content.Context
+import com.wawi.extra.common.http.dao.DownloadDatabase
 import java.lang.NullPointerException
 
 object CommonModule {
     private var sAppContext: Context? = null
+    private var sDatabase: DownloadDatabase? = null
     /**
      * 在Application.onCreate 中注册
      * <br/>
@@ -21,7 +24,17 @@ object CommonModule {
     fun regist(appContext: Context) {
         if (sAppContext == null) {
             sAppContext = appContext.applicationContext
+            // 初始化下载控件
+            sDatabase = Room.databaseBuilder(
+                sAppContext!!,
+                DownloadDatabase::class.java,
+                "_download.db"
+            ).build()
         }
+    }
+
+    fun getDownloadDatabase(): DownloadDatabase {
+        return sDatabase ?: throw NullPointerException("CommonModule.sAppContext can not be null. Use after registration.")
     }
 
     /**

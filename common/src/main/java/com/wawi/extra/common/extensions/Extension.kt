@@ -3,6 +3,7 @@ package com.wawi.api.extensions
 import android.content.Context
 import com.kaopiz.kprogresshud.KProgressHUD
 import com.wawi.api.CommonModule
+import java.lang.Exception
 import java.util.*
 
 /**
@@ -86,3 +87,14 @@ val Int.dp: Int
  */
 val Int.money: Float
     get() = (this.toFloat() / 100)
+
+fun String.getScheme(): String {
+    if (this.isEmpty() || this.indexOf("://") < 0) throw Exception("Not a valid Url.")
+    return this.split("://")[0]
+}
+fun String.getUrl(): String {
+    if (this.isEmpty() || this.indexOf("://") < 0) throw Exception("Not a valid Url.")
+    val segments = this.split("://")[1]
+    val first = segments.indexOf("/")
+    return segments.substring(0, first)
+}
