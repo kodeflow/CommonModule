@@ -21,17 +21,17 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import com.wawi.api.CommonModule
 import com.wawi.api.crypt.AESCrypt
 import com.wawi.api.extensions.hud
 import com.wawi.api.extensions.isLeapYear
 import com.wawi.api.extensions.weekNameCN
 import com.wawi.api.extensions.weekNameEN
-import com.wawi.extra.common.bean.DownloadBean
-import com.wawi.extra.common.http.DownloadManager
+import com.wawi.extra.common.http.download.DownloadManager
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.jetbrains.anko.downloadManager
 import java.util.*
 
 
@@ -65,19 +65,31 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
         })
 
         email_sign_in_button.setOnClickListener {
-            DownloadManager.shared().download("http://imtt.dd.qq.com/16891/89E1C87A75EB3E1221F2CDE47A60824A.apk?fsname=com.snda.wifilocating_4.2.62_3192.apk&csr=1bbd")
-            attemptLogin() }
+//            val url = "https://publicobject.com/helloworld.txt"
+             //val url = "http://imtt.dd.qq.com/16891/89E1C87A75EB3E1221F2CDE47A60824A.apk?fsname=com.snda.wifilocating_4.2.62_3192.apk&csr=1bbd"
+            val url = "https://nj02all01.baidupcs.com/file/a74deb0e3d119f839dd65e4ba5b6854a?bkt=en-c58a217c5b5bf7b2a908fb7579ce52e3f1a57ebb136083e4b277c5bc600493bee9168ac3f191da77&fid=404856442-250528-472007050951628&time=1568599190&sign=FDTAXGERLQBHSKfW-DCb740ccc5511e5e8fedcff06b081203-FjNlcT6XIS4oHIelpndrgpimhe0%3D&to=69&size=42591684&sta_dx=42591684&sta_cs=0&sta_ft=psd&sta_ct=0&sta_mt=0&fm2=MH%2CGuangzhou%2CAnywhere%2C%2Chubei%2Cct&ctime=1568599020&mtime=1568599020&resv0=cdnback&resv1=0&resv2=&resv3=&vuk=1010835052&iv=0&htype=&randtype=&newver=1&newfm=1&secfm=1&flow_ver=3&pkey=en-35801a4295edc6012316773d9e8e96a32233bec51271dfd896ef950e4d15679d1a8804c87b0c02b2&sl=76480590&expires=8h&rt=sh&r=917575372&vbdid=1103453851&fin=3.psd&rtype=1&dp-logid=5993409289915168544&dp-callid=0.1&hps=1&tsl=80&csl=80&csign=9H8hlOWTyLGwVY8uZnCXOQywuCU%3D&so=0&ut=6&uter=4&serv=0&uc=2251096754&ti=45e4b516918e14430746e23b6d67944c2ecc21b09cdefd38&by=themis"
 
-        GlobalScope.launch {
-            val item = DownloadBean("http://baidu.com", "caowen/*.apk", "*.apk", 100, 30)
-            val item1 = DownloadBean("http://baidu.com", "codeflow/*.apk", "*.apk", 100, 30)
-
-            CommonModule.getDownloadDatabase().downloadDao().insertRecords(item, item1)
-            val bean = CommonModule.getDownloadDatabase().downloadDao().findByUrl("http://baidu.com")
-
-            println("bean: $bean")
-
+            GlobalScope.launch {
+                DownloadManager.shared().download(url, { read, total, done ->
+                    println("---- $read $total  $done")
+                }) {
+                    println("---- $it")
+                }
+            }
+//            Thread(Progress()).start()
+            attemptLogin()
         }
+
+//        GlobalScope.launch {
+//            val item = DownloadBean("http://baidu.com", "caowen/*.apk", "*.apk", 100, 30)
+//            val item1 = DownloadBean("http://baidu.com", "codeflow/*.apk", "*.apk", 100, 30)
+//
+//            CommonModule.getDownloadDatabase().downloadDao().insertRecords(item, item1)
+//            val bean = CommonModule.getDownloadDatabase().downloadDao().findByUrl("http://baidu.com")
+//
+//            println("bean: $bean")
+//
+//        }
 
 
 
@@ -348,5 +360,13 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
          * TODO: remove after connecting to a real authentication system.
          */
         private val DUMMY_CREDENTIALS = arrayOf("foo@example.com:hello", "bar@example.com:world")
+    }
+
+    fun handleAction(view: View) {
+        when (view.id) {
+            R.id.pause -> {
+                DownloadManager.shared().pause()
+            }
+        }
     }
 }

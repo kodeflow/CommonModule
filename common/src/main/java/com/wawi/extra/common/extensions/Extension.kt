@@ -3,7 +3,12 @@ package com.wawi.api.extensions
 import android.content.Context
 import com.kaopiz.kprogresshud.KProgressHUD
 import com.wawi.api.CommonModule
+import okhttp3.MediaType
+import java.io.File
+import java.io.FileInputStream
 import java.lang.Exception
+import java.math.BigInteger
+import java.security.MessageDigest
 import java.util.*
 
 /**
@@ -92,9 +97,49 @@ fun String.getScheme(): String {
     if (this.isEmpty() || this.indexOf("://") < 0) throw Exception("Not a valid Url.")
     return this.split("://")[0]
 }
-fun String.getUrl(): String {
+fun String.getHost(): String {
     if (this.isEmpty() || this.indexOf("://") < 0) throw Exception("Not a valid Url.")
     val segments = this.split("://")[1]
     val first = segments.indexOf("/")
     return segments.substring(0, first)
+}
+
+/**
+ * 获取带http:// 等前缀的完整Host地址
+ */
+fun String.getBaseUrl(): String {
+    if (this.isEmpty() || this.indexOf("://") < 0) throw Exception("Not a valid Url.")
+    return "${this.getScheme()}://${this.getHost()}"
+}
+
+fun MediaType.sufix(): String {
+    val subtype = this.subtype()
+    val regex = "[.|-|+]+".toRegex()
+    if (regex.containsMatchIn(subtype)) {
+        return when (subtype) {
+            "vnd.android.package-archive" -> ".apk"
+            else -> ""
+        }
+    }
+    return ".$subtype"
+}
+
+fun File.digest(): String? {
+    return  digest(16)
+}
+
+fun File.digest(radix: Int): String? {
+    if (!this.isFile) return null
+    if (!this.exists()) return null
+    val d = MessageDigest.getInstance("MD5")
+    val fi = FileInputStream(this)
+    var len = 0
+    val buffer = ByteArray(1024 *4)
+    while ((fi.read(buffer, 0, buffer.size).also { len = it }) != -1) {
+        d.update(buffer, 0, len)
+    }
+    fi.close()
+    val bigInt = BigInteger(1, d.digest())
+
+    return  bigInt.toString(radix)
 }

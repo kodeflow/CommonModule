@@ -9,6 +9,6 @@ data class DownloadBean(
     @PrimaryKey val url: String,
     @ColumnInfo(name = "file_path") val filePath: String,
     @ColumnInfo(name = "file_name") val fileName: String,
-    @ColumnInfo(name = "content_length") val contentLength: Long,
-    @ColumnInfo(name = "read_length") val readLength: Long
+    @ColumnInfo(name = "content_length") val contentLength: Long = 0,
+    @ColumnInfo(name = "read_length") var readLength: Long = 0
 )
