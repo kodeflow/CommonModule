@@ -8,6 +8,10 @@ class App: Application() {
     super.onCreate()
     // 在此注册后方可在应用内使用
     CommonModule.regist(this)
+    // 打开调试
+    CommonModule.setDebugModeEnable(true)
+    // 初始化封装的Toast
+    ToastCompat.init(this)
   }
 }
 ```
