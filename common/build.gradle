@@ -49,12 +49,15 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"
     api 'android.arch.persistence.room:runtime:1.1.1'
     kapt 'android.arch.persistence.room:compiler:1.1.1'
+    // updateApp
+    api 'com.qianwen:update-app:3.5.2'
+    api 'com.qianwen:update-app-kotlin:1.2.3'
 }
 apply plugin: 'com.novoda.bintray-release'//添加
 publish {
     userOrg = 'hbwawi'
     groupId = 'com.wawi.common'
     artifactId = 'CommonModule'
-    publishVersion = '0.1.5'
+    publishVersion = '0.1.6'
     desc = 'kotlin公共代码封装'
 }
