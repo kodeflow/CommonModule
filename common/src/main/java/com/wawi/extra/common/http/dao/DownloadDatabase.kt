@@ -1,7 +1,7 @@
 package com.wawi.extra.common.http.dao
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
+import androidx.room.Database
+import androidx.room.RoomDatabase
 import com.wawi.extra.common.bean.DownloadBean
 
 @Database(entities = [DownloadBean::class], version = 1)

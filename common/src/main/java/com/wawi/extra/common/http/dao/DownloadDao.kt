@@ -1,6 +1,6 @@
 package com.wawi.extra.common.http.dao
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import com.wawi.extra.common.bean.DownloadBean
 
 @Dao
