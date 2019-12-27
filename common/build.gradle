@@ -36,6 +36,14 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    // appcompat
+    api 'androidx.appcompat:appcompat:1.1.0'
+    // recyclerview
+    api 'androidx.recyclerview:recyclerview:1.1.0'
+    // cardview
+    api 'androidx.cardview:cardview:1.0.0'
+    // constraintlayout
+    api 'androidx.constraintlayout:constraintlayout:1.1.3'
     // retrofit2
     api 'com.squareup.retrofit2:retrofit:2.6.1'
     api 'com.squareup.retrofit2:converter-gson:2.6.1'
@@ -58,6 +66,6 @@ publish {
     userOrg = 'hbwawi'
     groupId = 'com.wawi.common'
     artifactId = 'CommonModule'
-    publishVersion = '0.1.6'
+    publishVersion = '0.1.7'
     desc = 'kotlin公共代码封装'
 }
