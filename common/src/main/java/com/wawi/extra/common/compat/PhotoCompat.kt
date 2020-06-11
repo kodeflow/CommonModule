@@ -201,11 +201,7 @@ open class PhotoCompat(context: Any) {
             return null
         }
         var path: String? = null
-        val cursor: Cursor? = if (context is Activity) {
-            (context as Activity).contentResolver?.query(uri,null,selection,null,null)
-        } else {
-            (context as androidx.fragment.app.Fragment).context?.contentResolver?.query(uri,null,selection,null,null)
-        }
+        val cursor: Cursor? = getContext()?.contentResolver?.query(uri,null,selection,null,null)
 
         if(cursor != null) {
             if(cursor.moveToFirst()) {
