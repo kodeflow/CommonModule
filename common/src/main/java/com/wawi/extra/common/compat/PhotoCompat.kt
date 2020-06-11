@@ -26,6 +26,7 @@ private const val AUTHORITY = "com.wawi.api.takephoto.fileprovider"
 
 open class PhotoCompat(context: Any) {
     private var context: Any? = null
+
     /** 当前请求类型【拍照、相册】 */
     var currentRequest = -1
 
@@ -37,7 +38,7 @@ open class PhotoCompat(context: Any) {
         when (context) {
             is androidx.fragment.app.Fragment -> this.context = context
             is Activity -> this.context = context
-            else -> throw Exception("Unknown context type: $context. @{android.support.v4.app.Fragment} & @{android.app.Activity} can be only supported")
+            else -> throw Exception("Unknown context type: $context. @{androidx.fragment.app.Fragment} & @{android.app.Activity} can be only supported")
         }
     }
 
@@ -59,11 +60,8 @@ open class PhotoCompat(context: Any) {
         intent.type = "image/*"
         intent.action = Intent.ACTION_PICK
         intent.data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-        if (context is androidx.fragment.app.Fragment) {
-            (context as androidx.fragment.app.Fragment).startActivityForResult(intent, currentRequest)
-        } else {
-            (context as Activity).startActivityForResult(intent, currentRequest)
-        }
+
+        startActivityForResult(intent, currentRequest)
 
     }
 
@@ -71,12 +69,7 @@ open class PhotoCompat(context: Any) {
      * 拍照获取图片
      */
     open fun takePhoto() {
-        val ctx: Context?
-        if (context is androidx.fragment.app.Fragment) {
-            ctx = (context as androidx.fragment.app.Fragment).context
-        } else {
-            ctx = (context as Activity)
-        }
+        val ctx: Context? = getContext()
 
         currentRequest = RequestType.REQUEST_TAKE_PHOTO
         val outputImage = File(ctx?.externalCacheDir,"output_image.jpg")
@@ -97,11 +90,8 @@ open class PhotoCompat(context: Any) {
 
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-        if (context is Activity) {
-            (context as Activity).startActivityForResult(intent, currentRequest)
-        } else {
-            (context as androidx.fragment.app.Fragment).startActivityForResult(intent, currentRequest)
-        }
+
+        startActivityForResult(intent, currentRequest)
     }
 
     /**
@@ -113,7 +103,7 @@ open class PhotoCompat(context: Any) {
             when (requestCode) {
                 // 如果是拍照
                 RequestType.REQUEST_TAKE_PHOTO -> {
-                    val bitmap = BitmapFactory.decodeStream(((context as? Activity) ?: (context as androidx.fragment.app.Fragment).context)?.contentResolver?.openInputStream(imageUri))
+                    val bitmap = BitmapFactory.decodeStream(getContext()?.contentResolver?.openInputStream(imageUri))
                     // Callback
                     delegate?.onPhoto(bitmap)
                 }
@@ -140,16 +130,26 @@ open class PhotoCompat(context: Any) {
      * ---------------- private methods ----------------
      */
 
+    private fun getContext() : Context? {
+        return when (context) {
+            is  androidx.fragment.app.Fragment -> (context as androidx.fragment.app.Fragment).context
+            else -> (context as Activity)
+        }
+    }
+
+    private fun startActivityForResult(intent: Intent, requestCode: Int) {
+        if (context is Activity) {
+            (context as Activity).startActivityForResult(intent, requestCode)
+        } else {
+            (context as androidx.fragment.app.Fragment).startActivityForResult(intent, requestCode)
+        }
+    }
+
     private fun handleResult(data: Intent?) {
         var imagePath:String? = null
         val uri = data?.data
 
-        val ctx: Context?
-        if (context is Activity) {
-            ctx = context as Activity
-        } else {
-            ctx = (context as androidx.fragment.app.Fragment).context
-        }
+        val ctx: Context? = getContext()
 
         if(DocumentsContract.isDocumentUri(ctx, uri)) {
 
