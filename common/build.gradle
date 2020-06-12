@@ -1,12 +1,10 @@
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 28
-
-
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 28
@@ -55,17 +53,65 @@ dependencies {
     // hud
     api 'com.kaopiz:kprogresshud:1.2.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"
-    api 'androidx.room:room-runtime:2.2.2'
-    kapt 'androidx.room:room-compiler:2.2.2'
+    api 'androidx.room:room-runtime:2.2.5'
+    kapt 'androidx.room:room-compiler:2.2.5'
     // updateApp
     api 'com.qianwen:update-app:3.5.2'
     api 'com.qianwen:update-app-kotlin:1.2.3'
 }
-apply plugin: 'com.novoda.bintray-release'//添加
-publish {
-    userOrg = 'hbwawi'
-    groupId = 'com.wawi.common'
-    artifactId = 'CommonModule'
-    publishVersion = '0.1.8'
-    desc = 'kotlin公共代码封装'
+
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+
+//afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            CommonModule(MavenPublication) {
+//                def project = project(":common")
+//                from project.components.java
+                from components.findByName(":common")
+                // You can then customize attributes of the publication as shown below.
+                groupId = 'com.wawi.common'
+                artifactId = 'CommonModule'
+                version = '0.1.7'
+            }
+        }
+    }
+//}
+bintray {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    user = properties.getProperty('bintrayUser')
+    key = properties.getProperty('bintrayApiKey')
+    print(user)
+    print(key)
+    publications = ['CommonModule']
+    pkg {
+        repo = 'maven'
+        name = 'CommonModule'
+        desc = 'kotlin公共代码封装'
+        userOrg = 'hbwawi'
+        vcsUrl = 'https://github.com/kodeflow/CommonModule.git'
+        labels = ['common', 'wawi', 'commonmodule']
+        version {
+            name = '0.1.7'
+            desc = '切换binary上传插件为maven-publish'
+            vcsTag = '0.1.7'
+        }
+    }
 }
+
+
+
+
+
+//apply plugin: 'com.novoda.bintray-release'//添加
+//publish {
+//    userOrg = 'hbwawi'
+//    groupId = 'com.wawi.common'
+//    artifactId = 'CommonModule'
+//    publishVersion = '0.1.7'
+//    desc = 'kotlin公共代码封装'
+//}

@@ -133,7 +133,7 @@ fun File.digest(radix: Int): String? {
     if (!this.exists()) return null
     val d = MessageDigest.getInstance("MD5")
     val fi = FileInputStream(this)
-    var len = 0
+    var len: Int
     val buffer = ByteArray(1024 *4)
     while ((fi.read(buffer, 0, buffer.size).also { len = it }) != -1) {
         d.update(buffer, 0, len)

@@ -49,7 +49,7 @@ class DownloadManager private constructor() {
 
         bean?.filePath?.let {
             val file = File(it)
-            if (file?.exists()) {
+            if (file.exists()) {
                 startPoint = file.length()
             }
         }
@@ -168,12 +168,12 @@ object Download {
         bean.readLength = file.length()
         dao.insertRecords(bean)
 
-        var channelOut: FileChannel? = null
-        var randomAccessFile: RandomAccessFile? = null
+        val channelOut: FileChannel? = null
+        var randomAccessFile: RandomAccessFile?
         randomAccessFile = RandomAccessFile(file, "rwd")
         randomAccessFile.seek(bean.readLength)
-        var len = 0
-        var buffer = ByteArray(1024 * 4)
+        var len: Int
+        val buffer = ByteArray(1024 * 4)
         var bufferredLength = 0L
 
         while ((it.byteStream().read(buffer).also { readed ->
@@ -188,7 +188,7 @@ object Download {
         dao.insertRecords(bean)
         it.byteStream().close()
         channelOut?.close()
-        randomAccessFile?.close()
+        randomAccessFile.close()
     }
 }
 

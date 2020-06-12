@@ -16,13 +16,13 @@ class ToastCompat {
                 println("初始化失败，application = null")
                 return
             }
-            instance.toast = Toast.makeText(app!!, DEFAULT_MESSAGE, TIME_LONG)
+            instance.toast = Toast.makeText(app, DEFAULT_MESSAGE, TIME_LONG)
         }
 
         fun show(message: String, duration: Int = TIME_SHORT) {
-            instance.toast?.setText(message)
-            instance.toast?.duration = duration
-            instance.toast?.show()
+            instance.toast.setText(message)
+            instance.toast.duration = duration
+            instance.toast.show()
         }
 
     }

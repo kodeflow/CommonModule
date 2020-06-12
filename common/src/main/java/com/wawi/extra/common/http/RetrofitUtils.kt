@@ -20,7 +20,7 @@ object RetrofitServiceFactory {
     /**
      * @see RetrofitServiceFactory.create(clazz: Class<T>, baseUrl: String, headerInterceptor: Interceptor = UserAgentInterceptor(), readTimeOut: Int = TIME_TO_READ, connectTimeOut: Int = TIME_TO_CONNECT)
      */
-    open fun <T> create(clazz: Class<T>, baseUrl: String, headerInterceptor: Interceptor = UserAgentInterceptor()): T {
+    fun <T> create(clazz: Class<T>, baseUrl: String, headerInterceptor: Interceptor = UserAgentInterceptor()): T {
         return create(clazz, baseUrl, headerInterceptor, TIME_TO_READ, TIME_TO_CONNECT)
     }
 
@@ -30,7 +30,7 @@ object RetrofitServiceFactory {
      * @param readTimeOut 读取连接超时设置（单位：秒）
      * @param connectTimeOut 连接超时设置（单位：秒）
      */
-    open fun <T> create(clazz: Class<T>, baseUrl: String, headerInterceptor: Interceptor = UserAgentInterceptor(), readTimeOut: Int = TIME_TO_READ, connectTimeOut: Int = TIME_TO_CONNECT): T {
+    fun <T> create(clazz: Class<T>, baseUrl: String, headerInterceptor: Interceptor = UserAgentInterceptor(), readTimeOut: Int = TIME_TO_READ, connectTimeOut: Int = TIME_TO_CONNECT): T {
         val client = OkHttpClient.Builder()
             .retryOnConnectionFailure(false)
             .addInterceptor(headerInterceptor)
@@ -54,7 +54,7 @@ open class LoggerInterceptor : Interceptor {
         val response = chain.proceed(chain.request())
         val body = response.body()?.string()
         if (CommonModule.debugModeEnabled) println("------ DEBUG INFO: \n$body")
-        return response.newBuilder().body(ResponseBody.create(MediaType.parse("UTF-8"), body)).build()
+        return response.newBuilder().body(ResponseBody.create(MediaType.parse("UTF-8"), body ?: "{}")).build()
     }
 
 }
